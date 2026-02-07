@@ -11,6 +11,71 @@ interface ParserResult {
 }
 
 /**
+ * Reorder extracted text to ensure logical flow
+ * Fixes PDF extraction issues where sections appear before header/contact info
+ */
+function reorderExtractedText(text: string): string {
+    const lines = text.split('\n');
+
+    const sectionHeaders = [
+        'PROFESSIONAL EXPERIENCE',
+        'WORK EXPERIENCE',
+        'EXPERIENCE',
+        'EDUCATION',
+        'SKILLS',
+        'PROFESSIONAL SUMMARY'
+    ];
+
+    const contactPatterns = [
+        /mobile:|phone:|email:|linkedin:/i,
+        /\+?\d{2,3}[\s-]?\d{3,4}[\s-]?\d{4,}/,
+        /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i,
+        /linkedin\.com/i
+    ];
+
+    // Find first section header and first contact info
+    let firstSectionIndex = -1;
+    let firstContactIndex = -1;
+
+    for (let i = 0; i < Math.min(lines.length, 30); i++) {
+        const line = lines[i].trim();
+
+        if (firstSectionIndex === -1 && sectionHeaders.some(h => line.toUpperCase().includes(h))) {
+            firstSectionIndex = i;
+        }
+
+        if (firstContactIndex === -1 && contactPatterns.some(p => p.test(line))) {
+            firstContactIndex = i;
+        }
+    }
+
+    // If section appears before contact, reorder
+    if (firstSectionIndex !== -1 && firstContactIndex !== -1 && firstSectionIndex < firstContactIndex) {
+        console.log('[PDF Reorder] Fixing extraction order');
+
+        const headerLines: string[] = [];
+        const bodyLines: string[] = [];
+        let foundSection = false;
+
+        for (const line of lines) {
+            if (!foundSection && sectionHeaders.some(h => line.trim().toUpperCase().includes(h))) {
+                foundSection = true;
+            }
+
+            if (foundSection) {
+                bodyLines.push(line);
+            } else {
+                headerLines.push(line);
+            }
+        }
+
+        return [...headerLines, '', ...bodyLines].join('\n');
+    }
+
+    return text;
+}
+
+/**
  * Parse PDF file using pdf-parse with custom configuration
  * Uses Mozilla's PDF.js engine - industry standard for PDF text extraction
  */
@@ -26,10 +91,13 @@ async function parsePDF(buffer: Buffer): Promise<ParserResult> {
         const data = await pdf(buffer, options);
 
         // Clean up the text
-        const cleanedText = data.text
+        let cleanedText = data.text
             .replace(/\r\n/g, '\n')
             .replace(/\n{3,}/g, '\n\n')
             .trim();
+
+        // Reorder text to fix extraction order issues (e.g., sections before header)
+        cleanedText = reorderExtractedText(cleanedText);
 
         return {
             text: cleanedText,
