@@ -1,0 +1,196 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Professional Enterprise Palette - Blue & White */
+  
+  /* Brand Colors */
+  --color-primary-50: 239 246 255;
+  --color-primary-100: 219 234 254;
+  --color-primary-200: 191 219 254;
+  --color-primary-300: 147 197 253;
+  --color-primary-400: 96 165 250;
+  --color-primary-500: 59 130 246;  /* Primary Brand Blue */
+  --color-primary-600: 37 99 235;
+  --color-primary-700: 29 78 216;
+  --color-primary-800: 30 64 175;
+  --color-primary-900: 30 58 138;
+  --color-primary-950: 23 37 84;
+
+  /* Neutrals */
+  --color-slate-50: 248 250 252;
+  --color-slate-100: 241 245 249;
+  --color-slate-200: 226 232 240;
+  --color-slate-300: 203 213 225;
+  --color-slate-400: 148 163 184;
+  --color-slate-500: 100 116 139;
+  --color-slate-600: 71 85 105;
+  --color-slate-700: 51 65 85;
+  --color-slate-800: 30 41 59;
+  --color-slate-900: 15 23 42;
+
+  /* Semantic Colors */
+  --color-success: 22 163 74;   /* Green-600 */
+  --color-warning: 217 119 6;    /* Amber-600 */
+  --color-error: 220 38 38;     /* Red-600 */
+  --color-info: 37 99 235;      /* Blue-600 */
+
+  /* Application Variables */
+  --bg-page: var(--color-slate-50);
+  --bg-card: 255 255 255;
+  --bg-surface: 255 255 255;
+  
+  --text-primary: var(--color-slate-900);
+  --text-secondary: var(--color-slate-600);
+  --text-muted: var(--color-slate-400);
+
+  --border-color: var(--color-slate-200);
+  --border-focus: var(--color-primary-500);
+}
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight text-slate-900;
+  }
+}
+
+@layer components {
+  /* Container & Layout */
+  .container-main {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8;
+  }
+
+  /* Card Styles - Clean & Professional */
+  .card {
+    @apply bg-white border border-slate-200 rounded-xl shadow-sm transition-shadow duration-200 overflow-hidden;
+  }
+  
+  .card:hover {
+    @apply shadow-md;
+  }
+
+  .card-header {
+    @apply px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-white;
+  }
+
+  .card-body {
+    @apply p-6;
+  }
+
+  /* Typography */
+  .text-h1 {
+    @apply text-3xl sm:text-4xl font-bold text-slate-900 mb-2;
+  }
+  
+  .text-h2 {
+    @apply text-2xl font-semibold text-slate-800 mb-4;
+  }
+  
+  .text-h3 {
+    @apply text-xl font-semibold text-slate-800 mb-2;
+  }
+
+  .text-body {
+    @apply text-base text-slate-600 leading-relaxed;
+  }
+
+  .text-label {
+    @apply text-sm font-medium text-slate-700 mb-1 block;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply bg-blue-600 text-white hover:bg-blue-700 shadow-sm hover:shadow focus:ring-blue-500 border border-transparent;
+  }
+
+  .btn-secondary {
+    @apply bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 hover:text-slate-900 focus:ring-slate-500;
+  }
+  
+  .btn-ghost {
+    @apply bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900;
+  }
+
+  .btn-danger {
+    @apply bg-white text-red-600 border border-red-200 hover:bg-red-50 focus:ring-red-500;
+  }
+
+  /* Inputs */
+  .input-field {
+    @apply w-full px-4 py-2.5 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200;
+  }
+
+  /* Badges & Tags */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border;
+  }
+
+  .badge-success {
+    @apply bg-green-50 text-green-700 border-green-200;
+  }
+
+  .badge-warning {
+    @apply bg-amber-50 text-amber-700 border-amber-200;
+  }
+
+  .badge-error {
+    @apply bg-red-50 text-red-700 border-red-200;
+  }
+
+  .badge-neutral {
+    @apply bg-slate-100 text-slate-700 border-slate-200;
+  }
+  
+  .badge-primary {
+    @apply bg-blue-50 text-blue-700 border-blue-200;
+  }
+
+  /* Progress Bars */
+  .progress-bg {
+    @apply w-full bg-slate-100 rounded-full h-2.5 overflow-hidden;
+  }
+
+  .progress-fill {
+    @apply h-full rounded-full transition-all duration-500 ease-out;
+  }
+
+  /* File Upload */
+  .upload-zone {
+    @apply border-2 border-dashed border-slate-300 rounded-xl p-8 text-center transition-all duration-200 cursor-pointer bg-slate-50 hover:bg-white hover:border-blue-400;
+  }
+  
+  .upload-zone-active {
+    @apply border-blue-500 bg-blue-50 ring-4 ring-blue-500/10;
+  }
+
+  /* Legacy Adapters & Overrides (To prevent immediate breakage while refactoring) */
+  .terminal-card {
+    @apply card !bg-white !border-slate-200 !backdrop-filter-none;
+  }
+  
+  .terminal-card::before {
+    @apply hidden;
+  }
+  
+  .scanline {
+    @apply hidden;
+  }
+  
+  .glow-text-green {
+    @apply text-green-700 !text-shadow-none;
+  }
+  
+  .glow-border-green {
+    @apply shadow-sm !box-shadow-none border-green-200;
+  }
+}
